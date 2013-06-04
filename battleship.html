@@ -54,8 +54,8 @@ var BattleShip = function(){
 			if(this.removePointFromShip(this.ships[i],x,y)){
 				return;
 			}
-			throw new Error('board is 1 with no corresponding ship!');
 		}
+		throw new Error('board is 1 with no corresponding ship!');
 	};
 	this.removePointFromShip = function(ship, x, y){
 		for(var i = 0; i < ship.length; i++){
