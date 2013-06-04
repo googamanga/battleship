@@ -1,0 +1,98 @@
+<script type="text/javascript">
+//make board 10 x 10
+//[[xxxxx][xxxxxx][xxxx]]
+
+//littleship - 2
+//bigship - 3
+
+//write a function that will genartate a random ship into the board
+//[[littleships],[bigship]]
+
+//check staate
+// check hit
+//check sunk ship
+//check mis
+
+//rule once a ship is sunk, there is a win
+
+var BattleShip = function(){
+	this.board= [];
+	this.littleShip = [[5,5],[5,6]];
+	this.bigShip = [[2,2],[3,2],[4,2]];
+	this.ships = [];
+	this.createBoardAndPlaceShips = function(n){
+		//create board
+		for(var i=0; i<n; i++) {
+		    this.board[i] = [];
+		    for(var j=0; j<n; j++) {
+		        this.board[i][j] = 0;
+		    }
+		}
+		this.placeShip(this.littleShip);
+		this.placeShip(this.bigShip);
+	};
+
+	this.placeShip = function(shipMatrix){//this.littleships, this.bigships){
+		for(var i = 0; i < shipMatrix.length; i++){
+			this.board[shipMatrix[i][0]][shipMatrix[i][1]] = 1;
+		}
+		this.ships.push(shipMatrix);
+	};
+	this.shoot = function(x,y){
+		if(this.board[x][y] === undefined){
+			console.log('bad coordinates! :(');
+		} else if(this.board[x][y] === 1){
+			console.log('HIT!');
+			this.findShipThatGotHit(x,y);
+			// this.
+		} else if (this.board[x][y] === 0) {
+			console.log('MISS!');
+		}
+	};
+	this.findShipThatGotHit = function(x,y){
+		for(var i = 0; i < this.ships.length; i++){
+			if(this.removePointFromShip(this.ships[i],x,y)){
+				return;
+			}
+			throw new Error('board is 1 with no corresponding ship!');
+		}
+	};
+	this.removePointFromShip = function(ship, x, y){
+		for(var i = 0; i < ship.length; i++){
+			if(ship[i][0] === x && ship[i][1] === y){
+				this.board[x][y] = 0;
+				if(this.checkIfShipIsSunck(ship)){
+					console.log('YOU WIN!');
+				}
+				return true;
+			}
+		}
+		return false;
+	};
+	this.checkIfShipIsSunck = function(ship){
+		var size = ship.length;
+		var life = size;
+		for(var i = 0; i < ship.length; i++){
+			if(!this.board[ship[i][0]][ship[i][1]]){
+				life -= 1;
+				if(life === 0){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+}
+
+var battleShip = new BattleShip();
+battleShip.createBoardAndPlaceShips(10)
+console.log(battleShip.board);
+
+
+</script>
+
+
+
+
+
